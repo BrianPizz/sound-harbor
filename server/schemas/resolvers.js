@@ -7,7 +7,10 @@ const resolvers = {
       return User.find().populate("orders");
     },
     user: async (_, { username }) => {
-      return User.findOne({ username }).populate("orders");
+      return User.findOne({ username }).populate([
+        { path: "orders" },
+        { path: "cart", populate: { path: "productId", model: "Product" } },
+      ]);
     },
     products: async () => {
       return Product.find();
@@ -27,24 +30,27 @@ const resolvers = {
     order: async (_, _, context) => {
       try {
         if (context.user) {
-          const user = await User.findById(context.user._id).populate('orders');
-    
+          const user = await User.findById(context.user._id).populate("orders");
+
           if (!user) {
-            throw new Error('User not found');
+            throw new Error("User not found");
           }
-    
+
           return user.orders;
         } else {
-          throw new AuthenticationError('User not authenticated');
+          throw new AuthenticationError("User not authenticated");
         }
       } catch (error) {
         console.error(error);
-        throw new Error('Failed to fetch orders');
+        throw new Error("Failed to fetch orders");
       }
     },
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate("thoughts");
+        return User.findOne({ _id: context.user._id }).populate([
+          { path: "orders" },
+          { path: "cart", populate: { path: "productId", model: "Product" } },
+        ]);
       }
       throw AuthenticationError;
     },
@@ -72,7 +78,6 @@ const resolvers = {
 
       return { token, user };
     },
-
   },
 };
 
