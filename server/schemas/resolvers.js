@@ -1,20 +1,34 @@
-const { User, Product, Order } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
+const { User, Product, Order } = require("../models");
+const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
-    Query: {
-        getUsers: async (_, args, context) => {
-            try {
-                const users = await User.find({}).populate('orders');
-                return users
-            } catch (error) {
-                console.error(error);
-              }
-        },
+  Query: {
+    users: async () => {
+      return User.find().populate("orders");
     },
-    Mutation: {
+    user: async (_, { username }) => {
+      return User.findOne({ username }).populate("orders");
+    },
+    products: async () => {
+      return Product.find();
+    },
+    product: async (_, { productId }) => {
+      return Product.findOne({ _id: productId });
+    },
+    orders: async () => {
+      return Order.find().populate("products");
+    },
+    order: async (_, { orderId }) => {
+      return Order.findOne({ _id: orderId }).populate("products");
+    },
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id }).populate("thoughts");
+      }
+      throw AuthenticationError;
+    },
+  },
+  Mutation: {},
+};
 
-    }
-}
-
-module.exports = resolvers; 
+module.exports = resolvers;
