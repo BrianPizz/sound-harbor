@@ -1,4 +1,4 @@
-const { User, Product, Order } = require("../models");
+const { User, Product, Order, Category } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -15,11 +15,32 @@ const resolvers = {
     product: async (_, { productId }) => {
       return Product.findOne({ _id: productId });
     },
+    categories: async () => {
+      return Category.find();
+    },
+    category: async (_, { categoryId }) => {
+      return Category.findOne({ _id: categoryId });
+    },
     orders: async () => {
       return Order.find().populate("products");
     },
-    order: async (_, { orderId }) => {
-      return Order.findOne({ _id: orderId }).populate("products");
+    order: async (_, _, context) => {
+      try {
+        if (context.user) {
+          const user = await User.findById(context.user._id).populate('orders');
+    
+          if (!user) {
+            throw new Error('User not found');
+          }
+    
+          return user.orders;
+        } else {
+          throw new AuthenticationError('User not authenticated');
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch orders');
+      }
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -51,7 +72,7 @@ const resolvers = {
 
       return { token, user };
     },
-    
+
   },
 };
 
