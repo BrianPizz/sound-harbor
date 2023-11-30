@@ -27,10 +27,10 @@ const resolvers = {
     orders: async () => {
       return Order.find().populate("products");
     },
-    order: async (_, args, context) => {
+    order: async (_, { userId }) => {
       try {
         if (context.user) {
-          const user = await User.findById(context.user._id).populate("orders");
+          const user = await User.findById({ _id: userId }).populate("orders");
 
           if (!user) {
             throw new Error("User not found");
@@ -77,6 +77,61 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+    addToCart: async (_, { userId, productId }, context) => {
+      try {
+        if (context.user) {
+          const user = await User.findByIdAndUpdate(context.user._id, {
+            $push: { cart: productId },
+          });
+
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          return user;
+        } else {
+          throw new AuthenticationError("User not authenticated");
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch orders");
+      }
+    },
+    createOrder: async (_, { userId }, context) => {
+      try {
+        if (context.user) {
+          const user = await User.findById(userId).populate("cart");
+
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          if (user.cart.length === 0) {
+            throw new Error("User cart is empty");
+          }
+
+          const totalAmount = user.cart.reduce(
+            (total, product) => total + product.price,
+            0
+          );
+
+          const order = await Order.create({
+            user: user._id,
+            products: user.cart.map((product) => ({ product: product._id })),
+            totalAmount,
+          });
+
+          user.cart = [];
+
+          return order;
+        } else {
+          throw new AuthenticationError("User not authenticated");
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to place order");
+      }
     },
   },
 };
