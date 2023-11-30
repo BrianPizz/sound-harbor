@@ -1,0 +1,8 @@
+[
+  {
+    "username": "brianpizz",
+    "email": "b@b.com",
+    "password": "password",
+    "orders": ["orderId1"]
+  }
+]

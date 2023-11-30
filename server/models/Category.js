@@ -9,4 +9,4 @@ const categorySchema = new Schema({
 
 const Category = model('Category', categorySchema);
 
-moduke.exports = Category;
+module.exports = Category;
