@@ -3,5 +3,20 @@
     "username": "brianpizz",
     "email": "b@b.com",
     "password": "password123"
+  },
+  {
+    "username": "mar",
+    "email": "m@m.com",
+    "password": "password123"
+  },
+  {
+    "username": "peyton",
+    "email": "p@p.com",
+    "password": "password123"
+  },
+  {
+    "username": "camo",
+    "email": "c@c.com",
+    "password": "password123"
   }
 ]
