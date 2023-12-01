@@ -1,18 +1,21 @@
 const db = require("../config/connection");
-const { User, Product, Order, Category } = require("../models");
+const { User, Product, Order, Category, Review } = require("../models");
 const userSeeds = require("./userSeeds.json");
 const categorySeeds = require("./categorySeeds.json");
 const productSeeds = require("./productSeeds.json");
 const cleanDB = require("./cleanDB");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const getRandomQuantity = () => Math.floor(Math.random() * 5) + 1;
+const getRandomRating = () => Math.floor(Math.random() * 5) + 1;
 
 db.once("open", async () => {
   try {
     // Clean DB for users, orders, products, and categories
     await cleanDB("User", "users");
     await cleanDB("Order", "orders");
+    await cleanDB("Review", "reviews");
     await cleanDB("Product", "products");
     await cleanDB("Category", "categories");
 
@@ -29,7 +32,8 @@ db.once("open", async () => {
       ...productSeed,
       category: categories.find(
         (category) => category.name === productSeed.category
-      ),
+      )._id,
+      _id: new mongoose.Types.ObjectId(),
     }));
 
     await Product.create(
@@ -66,6 +70,40 @@ db.once("open", async () => {
 
       user.orders.push(order._id);
       await user.save();
+    }
+
+    // Create reviews for products
+    for (const product of productSeedsWithCategoryIds) {
+      const productReviews = [];
+      const productIds = await Product.find().distinct("_id");
+
+      // Assign random reviews to users
+      for (const user of users) {
+        const review = {
+          user: user._id,
+          product: productIds[0],
+          comment: `This is a great product!`,
+          rating: getRandomRating(),
+        };
+
+        productReviews.push(review);
+      }
+
+      // Create reviews for the product
+      const createdReviews = await Review.create(productReviews);
+
+      console.log(`Product ID (After Reviews): ${product._id}`);
+      console.log(`Reviews for Product: ${JSON.stringify(productReviews, null, 2)}`);
+      console.log(`Created Reviews: ${JSON.stringify(createdReviews, null, 2)}`);
+    
+
+      // Extract the IDs from the created reviews
+      const reviewIds = createdReviews.map((review) => review._id);
+
+      // Update the product's reviews array with the review IDs
+      await Product.findByIdAndUpdate(productIds[0], {
+        $push: { reviews: reviewIds },
+      });
     }
   } catch (err) {
     console.error(err);
