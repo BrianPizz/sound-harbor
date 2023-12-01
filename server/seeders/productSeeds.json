@@ -1,5 +1,6 @@
 [
     {
+      "_id": "61ae1e0a00d3c06d5f89e2c4",
       "name": "Shure SM7B Cardioid Dynamic Microphone",
       "description": "Popular microphone for vocals and broadcasting",
       "category": "Microphones",
@@ -8,6 +9,7 @@
       "image": "shure_sm7b.jpg"
     },
     {
+      "_id": "61ae1e0a00d3c06d5f89e2c5",
       "name": "Audio-Technica ATH-M50x Professional Studio Monitor Headphones",
       "description": "Closed-back headphones with exceptional clarity",
       "category": "Headphones",
@@ -16,6 +18,7 @@
       "image": "audio_technica_m50x.jpg"
     },
     {
+      "_id": "61ae1e0a00d3c06d5f89e2c6",
       "name": "KRK Rokit 5 G4 Studio Monitor (Single)",
       "description": "Bi-amped, class-D amplifier studio monitor",
       "category": "Studio Monitors",
@@ -24,6 +27,7 @@
       "image": "krk_rokit_5.jpg"
     },
     {
+      "_id": "61ae1e0a00d3c06d5f89e2c7",
       "name": "Focusrite Scarlett 2i2 USB Audio Interface (3rd Gen)",
       "description": "High-performance audio interface for recording",
       "category": "Audio Interfaces",
@@ -32,6 +36,7 @@
       "image": "focusrite_scarlett_2i2.jpg"
     },
     {
+      "_id": "61ae1e0a00d3c06d5f89e2c8",
       "name": "Akai Professional MPK Mini MKII MIDI Keyboard Controller",
       "description": "Compact keyboard controller with 25 keys",
       "category": "Keyboards & Controllers",

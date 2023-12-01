@@ -16,11 +16,6 @@ db.once("open", async () => {
     await cleanDB("Product", "products");
     await cleanDB("Category", "categories");
 
-    // Hash seed passwords
-    for (let i = 0; i < userSeeds.length; i++) {
-      userSeeds[i].password = process.env.SEED_PASSWORD;
-    }
-
     // Create users
     const users = await User.create(userSeeds);
     console.log(users);
@@ -34,10 +29,12 @@ db.once("open", async () => {
       ...productSeed,
       category: categories.find(
         (category) => category.name === productSeed.category
-      )._id,
+      ),
     }));
 
-    await Product.create(productSeedsWithCategoryIds);
+    await Product.create(
+      productSeedsWithCategoryIds.map(({ _id, ...rest }) => rest)
+    );
 
     // Populate users' carts with product IDs
     const productIds = await Product.find().distinct("_id");
@@ -48,21 +45,18 @@ db.once("open", async () => {
 
     // Create random orders for users
     for (const user of users) {
-      const randomProductIds = productSeeds
-        .slice(0, 3)
-        .map((product) => product._id);
+      const randomProductIds = productIds.slice(0, 3);
 
       const orderProducts = randomProductIds.map((productId) => ({
         product: productId,
         quantity: getRandomQuantity(),
       }));
 
-      const totalAmount = orderProducts.reduce((total, orderProduct) => {
-        const product = productSeeds.find((p) =>
-          p._id.equals(orderProduct.product)
-        );
-        return total + product.price * orderProduct.quantity;
-      }, 0);
+      let totalAmount = 0;
+      for (const orderProduct of orderProducts) {
+        const product = await Product.findById(orderProduct.product);
+        totalAmount += product.price * orderProduct.quantity;
+      }
 
       const order = await Order.create({
         user: user._id,
@@ -75,8 +69,9 @@ db.once("open", async () => {
     }
   } catch (err) {
     console.error(err);
+  } finally {
+    await db.close();
   }
 
   console.log("Seed data inserted successfully!");
-  db.close();
 });
