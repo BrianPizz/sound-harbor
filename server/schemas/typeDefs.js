@@ -14,6 +14,7 @@ type Product {
     price: Float!
     quantity: Int!
     image: String!
+    reviews: [Review]
 }
 
 type Order {
@@ -21,6 +22,15 @@ type Order {
     user: [User]
     products: [Product]
     totalAmount: Float!
+    date: String!
+}
+
+type Review {
+    _id: ID!
+    user: User!
+    product: Product!
+    rating: Float!
+    comment: String!
     date: String!
 }
 

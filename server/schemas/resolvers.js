@@ -1,4 +1,4 @@
-const { User, Product, Order, Category } = require("../models");
+const { User, Product, Order, Category, Review } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -13,10 +13,10 @@ const resolvers = {
       ]);
     },
     products: async () => {
-      return Product.find();
+      return Product.find().populate('reviews');
     },
     product: async (_, { productId }) => {
-      return Product.findOne({ _id: productId });
+      return Product.findOne({ _id: productId }).populate('reviews');
     },
     categories: async () => {
       return Category.find();
@@ -78,11 +78,31 @@ const resolvers = {
 
       return { token, user };
     },
-    addToCart: async (_, { userId, productId }, context) => {
+    addToCart: async (_, {productId }, context) => {
       try {
         if (context.user) {
           const user = await User.findByIdAndUpdate(context.user._id, {
             $push: { cart: productId },
+          });
+
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          return user;
+        } else {
+          throw new AuthenticationError("User not authenticated");
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch orders");
+      }
+    },
+    removeFromCart: async (_, {productId }, context) => {
+      try {
+        if (context.user) {
+          const user = await User.findByIdAndUpdate(context.user._id, {
+            $pull: { cart: productId },
           });
 
           if (!user) {
@@ -133,6 +153,32 @@ const resolvers = {
         throw new Error("Failed to place order");
       }
     },
+    addReview: async (_, { reviewInput }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const review = await Review.create({
+        user: context.user._id,
+        ...reviewInput,
+      });
+
+      return review
+    },
+    deleteReview: async (_, { reviewId }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError('User not authenticated');
+      }
+
+      const review = await Review.findById(reviewId);
+      if (!review || review.user.toString() !== context.user._id.toString()) {
+        throw new Error('Review not found or user is not the author');
+      }
+
+      await review.remove();
+
+      return review;
+    }
   },
 };
 
