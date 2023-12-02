@@ -1,6 +1,6 @@
 const typeDefs = `
 type User {
-    id: ID!
+    _id: ID!
     username: String!
     email: String!
     password: String!
@@ -8,7 +8,7 @@ type User {
 }
 
 type Product {
-    id: ID!
+    _id: ID!
     name: String!
     description: String!
     price: Float!
@@ -17,12 +17,17 @@ type Product {
     reviews: [Review]
 }
 
+type Category {
+    _id: ID!
+    name: String!
+}
+
 type Order {
-    id: ID!
+    _id: ID!
     user: [User]
     products: [Product]
     totalAmount: Float!
-    date: String!
+    dateCreated: String!
 }
 
 type Review {
@@ -47,7 +52,7 @@ type Query {
     categories: [Category]
     category(categoryId: ID!): Category
     orders: [Order]
-    order(userId: ID!): Order  
+    order(userId: ID!): User 
     reviews: [Review]
     review(reviewId: ID!): Review
     me: User
@@ -62,7 +67,7 @@ type Mutation {
     createOrder(userId: ID!): Order
     addReview(productId: ID!, rating: Int!, comment: String!, date: String!): Review
     updateReview(reviewId: ID!, rating: Int!, comment: String!, date: String!): Review
-    deletReview(reviewId: ID!): Review
+    deleteReview(reviewId: ID!): Review
 }
 `;
 

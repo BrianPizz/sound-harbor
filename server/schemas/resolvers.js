@@ -28,7 +28,7 @@ const resolvers = {
     orders: async () => {
       return Order.find().populate("products");
     },
-    order: async (_, { userId }) => {
+    order: async (_, { userId }, context) => {
       try {
         if (context.user) {
           const user = await User.findById({ _id: userId }).populate("orders");
@@ -37,7 +37,7 @@ const resolvers = {
             throw new Error("User not found");
           }
 
-          return user.orders;
+          return user;
         } else {
           throw new AuthenticationError("User not authenticated");
         }
@@ -102,7 +102,7 @@ const resolvers = {
         }
       } catch (error) {
         console.error(error);
-        throw new Error("Failed to fetch orders");
+        throw new Error("Failed to add to cart");
       }
     },
     removeFromCart: async (_, { productId }, context) => {
@@ -122,7 +122,7 @@ const resolvers = {
         }
       } catch (error) {
         console.error(error);
-        throw new Error("Failed to fetch orders");
+        throw new Error("Failed to remove from cart");
       }
     },
     clearCart: async (_, { userId }, context) => {
@@ -208,8 +208,7 @@ const resolvers = {
         throw new AuthenticationError("User not authenticated");
       }
 
-      const review = await Review.findByIdAndUpdate(reviewId, ...reviewInput);
-      if (!review) {
+      const review = await Review.findByIdAndUpdate(reviewId, { $set: reviewInput }, { new: true });      if (!review) {
         throw new AuthenticationError("Review not found");
       }
     },
