@@ -75,13 +75,13 @@ db.once("open", async () => {
     // Create reviews for products
     for (const product of productSeedsWithCategoryIds) {
       const productReviews = [];
-      const productIds = await Product.find().distinct("_id");
-
+      const productDocument = await Product.findOne({ name: product.name });
+      const productId = productDocument._id;
       // Assign random reviews to users
       for (const user of users) {
         const review = {
           user: user._id,
-          product: productIds[0],
+          product: productId,
           comment: `This is a great product!`,
           rating: getRandomRating(),
         };
@@ -101,7 +101,7 @@ db.once("open", async () => {
       const reviewIds = createdReviews.map((review) => review._id);
 
       // Update the product's reviews array with the review IDs
-      await Product.findByIdAndUpdate(productIds[0], {
+      await Product.findByIdAndUpdate(productId, {
         $push: { reviews: reviewIds },
       });
     }
