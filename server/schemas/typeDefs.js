@@ -4,6 +4,7 @@ type User {
     username: String!
     email: String!
     password: String!
+    cart: [Product]
     orders: [Order]
 }
 
@@ -46,7 +47,7 @@ type Auth {
 
 type Query {
     users: [User]
-    user(username: String!): User
+    user(userId: ID!): User
     products: [Product]
     product(productId: ID!): Product
     categories: [Category]
