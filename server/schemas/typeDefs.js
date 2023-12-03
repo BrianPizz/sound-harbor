@@ -13,7 +13,7 @@ type Product {
     name: String!
     description: String!
     price: Float!
-    quantity: Int!
+    quantity: Int
     image: String!
     reviews: [Review]
 }
@@ -26,10 +26,15 @@ type Category {
 type Order {
     _id: ID!
     user: [User]
-    products: [Product]
+    products: [OrderProduct]
     totalAmount: Float!
     dateCreated: String!
 }
+
+type OrderProduct {
+    product: ID
+    quantity: Int
+  }
 
 type Review {
     _id: ID!
@@ -53,7 +58,7 @@ type Query {
     categories: [Category]
     category(categoryId: ID!): Category
     orders: [Order]
-    order(userId: ID!): User 
+    order(orderId: ID!): Order
     reviews: [Review]
     review(reviewId: ID!): Review
     me: User

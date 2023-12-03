@@ -28,23 +28,8 @@ const resolvers = {
     orders: async () => {
       return Order.find().populate("products");
     },
-    order: async (_, { userId }, context) => {
-      try {
-        if (context.user) {
-          const user = await User.findById({ _id: userId }).populate("orders");
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          return user;
-        } else {
-          throw new AuthenticationError("User not authenticated");
-        }
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch orders");
-      }
+    order: async (_, { orderId }, ) => {
+      return Order.findById(orderId)
     },
     reviews: async () => {
       return Review.find();
@@ -60,6 +45,14 @@ const resolvers = {
         ]);
       }
       throw AuthenticationError;
+    },
+  },
+  Order: {
+    products: async (parent) => {
+      return parent.products.map((orderProduct) => ({
+        product: orderProduct.product,
+        quantity: orderProduct.quantity,
+      }));
     },
   },
   Mutation: {
@@ -90,7 +83,9 @@ const resolvers = {
         if (context.user) {
           const user = await User.findByIdAndUpdate(context.user._id, {
             $push: { cart: productId },
-          });
+          },
+          { new: true }
+          );
 
           if (!user) {
             throw new Error("User not found");
@@ -108,12 +103,16 @@ const resolvers = {
     removeFromCart: async (_, { productId }, context) => {
       try {
         if (context.user) {
-          const user = await User.findByIdAndUpdate(context.user._id, {
-            $pull: { cart: productId },
-          });
+          const user = await User.findByIdAndUpdate(
+            context.user._id,
+            {
+              $pull: { cart: { $in: [productId] } },
+            },
+            { new: true }
+          );
 
           if (!user) {
-            throw new Error("User not found");
+            throw new Error("User not found or specified product not in cart");
           }
 
           return user;
