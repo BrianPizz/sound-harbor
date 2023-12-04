@@ -6,6 +6,20 @@ const productSeeds = require("./productSeeds.json");
 const cleanDB = require("./cleanDB");
 require("dotenv").config();
 
+// random num
+function generateRandomNumber() {
+  return Math.floor(Math.random() * (10 - 3 + 1)) + 3;
+}
+
+// Fisher-Yates shuffle function
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 db.once("open", async () => {
   try {
     // Clean DB for users, orders, products, and categories
@@ -14,6 +28,7 @@ db.once("open", async () => {
     await cleanDB("Review", "reviews");
     await cleanDB("Product", "products");
     await cleanDB("Category", "categories");
+    await cleanDB("Cart", "carts");
 
     // Create users
     const users = await User.create(userSeeds);
@@ -41,11 +56,45 @@ db.once("open", async () => {
     const products = await Product.create(
       productCategoryMap.map(({ productIndex, categoryIndex }) => ({
         ...productSeeds[productIndex],
-        category: categories[categoryIndex]._id
+        category: categories[categoryIndex]._id,
       }))
     );
     console.log(products);
 
+    // create cart for each user
+    for (const user of users) {
+      const cart = await Cart.create({
+        user: user._id,
+      });
+
+      // shuffle the products array
+      const shuffledProducts = shuffleArray(products);
+
+      // add products to user carts
+      for (let i = 0; i < generateRandomNumber(); i++) {
+        const product = shuffledProducts[i];
+        const refProduct = await Product.findById(product._id);
+        const randomQuantity = generateRandomNumber();
+        const randomPrice = refProduct.price * randomQuantity;
+        const updatedCart = await Cart.findByIdAndUpdate(
+          cart._id,
+          {
+            $push: {
+              products: {
+                product: {
+                  _id: product._id,
+                  name: refProduct.name,
+                  quantity: randomQuantity,
+                  price: randomPrice,
+                },
+              },
+            },
+            $inc: { totalAmount: randomPrice },
+          },
+          { new: true }
+        );
+      }
+    }
   } catch (err) {
     console.error(err);
   } finally {

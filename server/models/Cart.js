@@ -7,8 +7,12 @@ const CartItemSchema = new Schema({
       ref: "Product",
       required: true,
     },
-    name: String,
-    quantity: Number,
+    name: {
+        type: String
+    },
+    quantity: {
+        type: Number
+    },
     price: {
       type: Number,
       default: 0,
@@ -28,6 +32,7 @@ const cartSchema = new Schema({
   totalAmount: {
     type: Number,
     required: true,
+    default: 0
   },
 });
 
