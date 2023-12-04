@@ -16,7 +16,7 @@ const CartItemSchema = new Schema({
   },
 });
 
-module.exports = Mongoose.model("CartItem", CartItemSchema);
+module.exports = model("CartItem", CartItemSchema);
 
 const cartSchema = new Schema({
   user: {
@@ -24,7 +24,7 @@ const cartSchema = new Schema({
     ref: "User",
     required: true,
   },
-  products: [CartItem],
+  products: [CartItemSchema],
   totalAmount: {
     type: Number,
     required: true,
