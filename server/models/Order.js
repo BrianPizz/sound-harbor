@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const dateFormat = require('../utils/dateformat');
+const dateFormat = require("../utils/dateformat");
 
 const orderSchema = new Schema({
   user: {
@@ -7,12 +7,10 @@ const orderSchema = new Schema({
     ref: "User",
     required: true,
   },
-  products: [
-    {
-      product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-      quantity: { type: Number, required: true }
-    },
-  ],
+  cart: {
+    type: Schema.Types.ObjectId,
+    ref: "Cart",
+  },
   totalAmount: {
     type: Number,
     required: true,
@@ -20,10 +18,10 @@ const orderSchema = new Schema({
   dateCreated: {
     type: Date,
     default: Date.now(),
-    get: (date) => dateFormat(date)
+    get: (date) => dateFormat(date),
   },
 });
 
-const Order = model('Order', orderSchema);
+const Order = model("Order", orderSchema);
 
 module.exports = Order;
