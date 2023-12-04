@@ -4,16 +4,15 @@ type User {
     username: String!
     email: String!
     password: String!
-    cart: [Product]
-    orders: [Order]
 }
 
 type Product {
     _id: ID!
     name: String!
     description: String!
+    category: Category!
     price: Float!
-    quantity: Int
+    stock: Int
     image: String!
     reviews: [Review]
 }
@@ -25,16 +24,25 @@ type Category {
 
 type Order {
     _id: ID!
-    user: [User]
-    products: [OrderProduct]
+    user: User
+    cart: Cart
     totalAmount: Float!
     dateCreated: String!
 }
 
-type OrderProduct {
-    product: ID
+type CartItem {
+    product: Product!
+    name: String
     quantity: Int
+    price: Float
   }
+
+type Cart {
+    _id: ID!
+    user: User
+    products: [CartItem]
+    totalAmount: Float!
+}
 
 type Review {
     _id: ID!

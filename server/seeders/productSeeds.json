@@ -4,7 +4,7 @@
     "description": "Popular microphone for vocals and broadcasting",
     "category": "Microphones",
     "price": 399.0,
-    "quantity": 20,
+    "stock": 20,
     "image": "shure_sm7b.jpg"
   },
   {
@@ -12,7 +12,7 @@
     "description": "Closed-back headphones with exceptional clarity",
     "category": "Headphones",
     "price": 149.0,
-    "quantity": 30,
+    "stock": 30,
     "image": "audio_technica_m50x.jpg"
   },
   {
@@ -20,7 +20,7 @@
     "description": "Bi-amped, class-D amplifier studio monitor",
     "category": "Studio Monitors",
     "price": 179.0,
-    "quantity": 15,
+    "stock": 15,
     "image": "krk_rokit_5.jpg"
   },
   {
@@ -28,7 +28,7 @@
     "description": "High-performance audio interface for recording",
     "category": "Audio Interfaces",
     "price": 159.99,
-    "quantity": 25,
+    "stock": 25,
     "image": "focusrite_scarlett_2i2.jpg"
   },
   {
@@ -36,7 +36,7 @@
     "description": "Compact keyboard controller with 25 keys",
     "category": "Keyboards & Controllers",
     "price": 119.0,
-    "quantity": 18,
+    "stock": 18,
     "image": "akai_mpk_mini.jpg"
   },
   {
@@ -44,7 +44,6 @@
     "description": "Complete software music production environment or Digital Audio Workstation (DAW).",
     "category": "Software",
     "price": 299.0,
-    "quantity": 25,
     "image": "fl_studio_20.jpg"
   },
   {
@@ -52,7 +51,6 @@
     "description": "Digital audio workstation (DAW) software for music production, live performance, and more.",
     "category": "Software",
     "price": 449.0,
-    "quantity": 20,
     "image": "ableton_live_11.jpg"
   },
   {
@@ -60,7 +58,6 @@
     "description": "A comprehensive collection of virtual instruments and effects for music production.",
     "category": "Software",
     "price": 599.0,
-    "quantity": 15,
     "image": "ni_komplete_13.jpg"
   },
   {
@@ -68,7 +65,6 @@
     "description": "Professional equalizer plugin with high-quality sound and a unique interface.",
     "category": "Software",
     "price": 179.0,
-    "quantity": 30,
     "image": "fabfilter_proq_3.jpg"
   },
   {
@@ -76,7 +72,6 @@
     "description": "A collection of creative audio effects plugins for sound manipulation and processing.",
     "category": "Software",
     "price": 499.0,
-    "quantity": 25,
     "image": "soundtoys_5_bundle.jpg"
   }
 ]
