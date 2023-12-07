@@ -10,7 +10,7 @@ const resolvers = {
     user: async (_, { userId }) => {
       return User.findById(userId).populate([
         { path: "orders" },
-        { path: "cart"},
+        { path: "cart" },
       ]);
     },
     products: async () => {
@@ -28,8 +28,8 @@ const resolvers = {
     orders: async () => {
       return Order.find().populate("products");
     },
-    order: async (_, { orderId }, ) => {
-      return Order.findById(orderId)
+    order: async (_, { orderId }) => {
+      return Order.findById(orderId);
     },
     reviews: async () => {
       return Review.find();
@@ -78,18 +78,31 @@ const resolvers = {
 
       return { token, user };
     },
-    addToCart: async (_, { productId }, context) => {
+    addToCart: async (_, { productId, quantity }, context) => {
       try {
         if (context.user) {
-          const user = await User.findByIdAndUpdate(context.user._id, {
-            $push: { cart: productId },
-          },
-          { new: true }
-          );
+          const user = await User.findById(context.user._id);
 
           if (!user) {
             throw new Error("User not found");
           }
+
+          const product = await Product.findById(productId);
+
+          if (!product) {
+            throw new Error("Product not found");
+          }
+
+          const cartItem = {
+            product: {
+              _id: product._id,
+              name: product.name,
+              quantity: quantity,
+              price: product.price * quantity,
+            },
+          };
+
+          user.cart.push(cartItem);
 
           return user;
         } else {
@@ -207,7 +220,12 @@ const resolvers = {
         throw new AuthenticationError("User not authenticated");
       }
 
-      const review = await Review.findByIdAndUpdate(reviewId, { $set: reviewInput }, { new: true });      if (!review) {
+      const review = await Review.findByIdAndUpdate(
+        reviewId,
+        { $set: reviewInput },
+        { new: true }
+      );
+      if (!review) {
         throw new AuthenticationError("Review not found");
       }
     },
