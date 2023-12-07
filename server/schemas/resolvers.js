@@ -47,14 +47,6 @@ const resolvers = {
       throw AuthenticationError;
     },
   },
-  Order: {
-    products: async (parent) => {
-      return parent.products.map((orderProduct) => ({
-        product: orderProduct.product,
-        quantity: orderProduct.quantity,
-      }));
-    },
-  },
   Mutation: {
     addUser: async (_, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -82,15 +74,10 @@ const resolvers = {
       try {
         if (context.user) {
           const user = await User.findById(context.user._id);
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-
           const product = await Product.findById(productId);
 
-          if (!product) {
-            throw new Error("Product not found");
+          if (!user || !product) {
+            throw new Error("User or product not found");
           }
 
           const cartItem = {
@@ -102,9 +89,17 @@ const resolvers = {
             },
           };
 
-          user.cart.push(cartItem);
+          // update the user's cart
+          const cart = await Cart.findOneAndUpdate(
+            { user: user._id },
+            {
+              $push: { products: cartItem },
+              $inc: { totalAmount: cartItem.product.price },
+            },
+            { new: true, upsert: true }
+          );
 
-          return user;
+          return cart;
         } else {
           throw new AuthenticationError("User not authenticated");
         }
@@ -113,28 +108,33 @@ const resolvers = {
         throw new Error("Failed to add to cart");
       }
     },
+
     removeFromCart: async (_, { productId }, context) => {
       try {
         if (context.user) {
           const user = await User.findById(context.user._id);
+          const product = await Product.findById(productId);
 
-          if (!user) {
-            throw new Error("User not found");
+          if (!user || !product) {
+            throw new Error("User or product not found");
           }
 
-          const cartItemIndex = user.cart.producst.findIndex(
+          // Find the cart item to remove
+          const cartItem = user.cart.products.find(
             (item) => item.product._id.toString() === productId
           );
 
-          if (cartItemIndex === -1) {
+          if (!cartItem) {
             throw new Error("Product not found in the cart");
           }
 
-          const removedCartItem = user.cart.splice(cartItemIndex, 1)[0];
-          user.cart.totalAmount -= removedCartItem.price;
+          // Remove the cart item
+          user.cart.products.pull(cartItem);
+          user.cart.totalAmount -= cartItem.product.price;
+
           await user.save();
 
-          return removedCartItem;
+          return user.cart;
         } else {
           throw new AuthenticationError("User not authenticated");
         }
@@ -146,14 +146,18 @@ const resolvers = {
     clearCart: async (_, { userId }, context) => {
       try {
         if (context.user) {
-          const user = findByIdAndUpdate(userId, {
-            $set: { cart: [] },
-          });
-
+          const user = await User.findById(userId);
           if (!user) {
             throw new Error("User not found");
           }
-          return user;
+
+          // Clear the user's cart
+          user.cart.products = [];
+          user.cart.totalAmount = 0;
+
+          await user.save();
+
+          return user.cart;
         } else {
           throw new AuthenticationError("User not authenticated");
         }
@@ -165,28 +169,30 @@ const resolvers = {
     createOrder: async (_, { userId }, context) => {
       try {
         if (context.user) {
-          const user = await User.findById(userId).populate("cart");
+          const user = await User.findById(userId);
 
-          if (!user) {
-            throw new Error("User not found");
+          const cart = await Cart.findOne({ user: user._id });
+
+          if (!cart) {
+            throw new Error("User's cart not found");
           }
 
-          if (user.cart.length === 0) {
-            throw new Error("User cart is empty");
-          }
-
-          const totalAmount = user.cart.reduce(
+          // Calculate total amount based on products in the cart
+          const totalAmount = cart.products.reduce(
             (total, product) => total + product.price,
             0
           );
 
           const order = await Order.create({
+            cart: cart,
             user: user._id,
-            products: user.cart.map((product) => ({ product: product._id })),
             totalAmount,
           });
 
-          user.cart = [];
+          // Clear the user's cart
+          cart.products = [];
+          cart.totalAmount = 0;
+          await cart.save();
 
           return order;
         } else {
