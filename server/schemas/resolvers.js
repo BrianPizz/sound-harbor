@@ -1,4 +1,4 @@
-const { User, Product, Order, Category, Review } = require("../models");
+const { User, Product, Order, Category, Review, Cart } = require("../models");
 const { findByIdAndDelete, findByIdAndUpdate } = require("../models/User");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
@@ -116,19 +116,25 @@ const resolvers = {
     removeFromCart: async (_, { productId }, context) => {
       try {
         if (context.user) {
-          const user = await User.findByIdAndUpdate(
-            context.user._id,
-            {
-              $pull: { cart: { $in: [productId] } },
-            },
-            { new: true }
-          );
+          const user = await User.findById(context.user._id);
 
           if (!user) {
-            throw new Error("User not found or specified product not in cart");
+            throw new Error("User not found");
           }
 
-          return user;
+          const cartItemIndex = user.cart.producst.findIndex(
+            (item) => item.product._id.toString() === productId
+          );
+
+          if (cartItemIndex === -1) {
+            throw new Error("Product not found in the cart");
+          }
+
+          const removedCartItem = user.cart.splice(cartItemIndex, 1)[0];
+          user.cart.totalAmount -= removedCartItem.price;
+          await user.save();
+
+          return removedCartItem;
         } else {
           throw new AuthenticationError("User not authenticated");
         }
