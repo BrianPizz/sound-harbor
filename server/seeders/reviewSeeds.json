@@ -1,0 +1,30 @@
+[
+    {
+        "user": "user_id", 
+        "product": "product_id",
+        "rating": 5,
+        "comment": "Excellent product! Highly recommended.",
+        "date": "2023-03-01T12:00:00Z"
+      },
+      {
+        "user": "user_id", 
+        "product": "product_id",
+        "rating": 5,
+        "comment": "Fantastic! Exceeded my expectations.",
+        "date": "2023-03-04T16:20:00Z"
+      },
+      {
+        "user": "user_id",
+        "product": "product_id",
+        "rating": 4,
+        "comment": "Good product",
+        "date": "2023-03-07T15:45:00Z"
+      },
+      {
+        "user": "user_id",
+        "product": "product_id",
+        "rating": 3,
+        "comment": "Decent product, but could be improved.",
+        "date": "2023-03-08T18:20:00Z"
+      }
+]
