@@ -32,7 +32,6 @@ type Order {
 
 type CartItem {
     product: Product!
-    name: String
     quantity: Int
     price: Float
   }
@@ -65,6 +64,8 @@ type Query {
     product(productId: ID!): Product
     categories: [Category]
     category(categoryId: ID!): Category
+    carts: [Cart]
+    cart(userId: ID!): Cart
     orders: [Order]
     order(orderId: ID!): Order
     reviews: [Review]

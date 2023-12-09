@@ -5,13 +5,10 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find().populate("orders").populate("cart");
+      return User.find();
     },
     user: async (_, { userId }) => {
-      return User.findById(userId).populate([
-        { path: "orders" },
-        { path: "cart" },
-      ]);
+      return User.findById(userId);
     },
     products: async () => {
       return Product.find().populate("reviews");
@@ -24,6 +21,12 @@ const resolvers = {
     },
     category: async (_, { categoryId }) => {
       return Category.findOne({ _id: categoryId });
+    },
+    carts: async () => {
+      return Cart.find();
+    },
+    cart: async (_, { userId }) => {
+      return Cart.findOne({ user: userId });
     },
     orders: async () => {
       return Order.find().populate("products");
