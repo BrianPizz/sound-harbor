@@ -1,4 +1,4 @@
-const { User, Product, Order, Category, Review, Cart } = require("../models");
+const { User, Product, Order, Category, Review, Cart, CartItem } = require("../models");
 const { findByIdAndDelete, findByIdAndUpdate } = require("../models/User");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
@@ -23,7 +23,20 @@ const resolvers = {
       return Category.findOne({ _id: categoryId });
     },
     carts: async () => {
-      return Cart.find();
+      try {
+        const carts = await Cart.find().populate({
+          path: 'products.product.product',
+          model: 'CartItem',
+        });
+        
+        console.log('Carts:', carts);
+
+    
+        return carts;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch carts");
+      }
     },
     cart: async (_, { userId }) => {
       return Cart.findOne({ user: userId });
@@ -111,35 +124,44 @@ const resolvers = {
         throw new Error("Failed to add to cart");
       }
     },
-
     removeFromCart: async (_, { productId }, context) => {
       try {
         if (context.user) {
           const user = await User.findById(context.user._id);
-          const product = await Product.findById(productId);
-
-          if (!user || !product) {
-            throw new Error("User or product not found");
+    
+          if (!user) {
+            throw new Error("User not found");
           }
-
-          // Find the cart item to remove
-          const cartItem = user.cart.products.find(
-            (item) => item.product._id.toString() === productId
+    
+          // Find the user's cart
+          const cart = await Cart.findOne({ user: user._id });
+    
+          if (!cart) {
+            throw new Error("Cart not found");
+          }
+    
+          // Find the cart item index to remove
+          const cartItemIndex = cart.products.findIndex(
+            (item) => item._id.toString() === productId
           );
-
-          if (!cartItem) {
+    
+          if (cartItemIndex === -1) {
             throw new Error("Product not found in the cart");
           }
-
+    
           // Remove the cart item
-          user.cart.products.pull(cartItem);
-          user.cart.totalAmount -= cartItem.product.price;
-
-          await user.save();
-
-          return user.cart;
+          cart.products.splice(cartItemIndex, 1);
+    
+          // Update totalAmount based on the remaining items
+          cart.totalAmount = cart.products.reduce(
+            (total, product) => total + product.price,
+            0
+          );
+    
+    
+          return cart;
         } else {
-          throw new AuthenticationError("User not authenticated");
+          throw new Error("User not authenticated");
         }
       } catch (error) {
         console.error(error);

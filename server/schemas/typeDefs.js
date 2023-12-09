@@ -39,7 +39,7 @@ type CartItem {
 type Cart {
     _id: ID!
     user: User
-    products: [CartItem]
+    products: [CartItem]!
     totalAmount: Float!
 }
 
