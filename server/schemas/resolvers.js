@@ -1,5 +1,12 @@
-const { User, Product, Order, Category, Review, Cart, CartItem } = require("../models");
-const { findByIdAndDelete, findByIdAndUpdate } = require("../models/User");
+const {
+  User,
+  Product,
+  Order,
+  Category,
+  Review,
+  Cart,
+  CartItem,
+} = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -23,7 +30,7 @@ const resolvers = {
       return Category.findOne({ _id: categoryId });
     },
     carts: async () => {
-      return Cart.find()
+      return Cart.find();
     },
     cart: async (_, { userId }) => {
       return Cart.findOne({ user: userId });
@@ -80,16 +87,16 @@ const resolvers = {
           const product = await Product.findById(productId);
 
           if (!user || !product) {
-            throw new Error("User or product not found");
+            throw Error("User or product not found");
           }
 
           const cartItem = {
             product: {
               _id: product._id,
               name: product.name,
-              quantity: quantity,
-              price: product.price * quantity,
             },
+            quantity: quantity,
+            price: product.price * quantity,
           };
 
           // update the user's cart
@@ -97,55 +104,54 @@ const resolvers = {
             { user: user._id },
             {
               $push: { products: cartItem },
-              $inc: { totalAmount: cartItem.product.price },
+              $inc: { totalAmount: cartItem.price },
             },
             { new: true, upsert: true }
           );
 
           return cart;
         } else {
-          throw new AuthenticationError("User not authenticated");
+          throw Error("User not authenticated");
         }
       } catch (error) {
         console.error(error);
-        throw new Error("Failed to add to cart");
+        throw Error("Failed to add to cart");
       }
     },
     removeFromCart: async (_, { productId }, context) => {
       try {
         if (context.user) {
           const user = await User.findById(context.user._id);
-    
+
           if (!user) {
             throw new Error("User not found");
           }
-    
+
           // Find the user's cart
           const cart = await Cart.findOne({ user: user._id });
-    
+
           if (!cart) {
             throw new Error("Cart not found");
           }
-    
+
           // Find the cart item index to remove
           const cartItemIndex = cart.products.findIndex(
             (item) => item._id.toString() === productId
           );
-    
+
           if (cartItemIndex === -1) {
             throw new Error("Product not found in the cart");
           }
-    
+
           // Remove the cart item
           cart.products.splice(cartItemIndex, 1);
-    
+
           // Update totalAmount based on the remaining items
           cart.totalAmount = cart.products.reduce(
             (total, product) => total + product.price,
             0
           );
-    
-    
+
           return cart;
         } else {
           throw new Error("User not authenticated");
@@ -171,7 +177,7 @@ const resolvers = {
 
           return user.cart;
         } else {
-          throw new AuthenticationError("User not authenticated");
+          throw new Error("User not authenticated");
         }
       } catch (error) {
         console.error(error);
@@ -208,7 +214,7 @@ const resolvers = {
 
           return order;
         } else {
-          throw new AuthenticationError("User not authenticated");
+          throw new Error("User not authenticated");
         }
       } catch (error) {
         console.error(error);
@@ -217,7 +223,7 @@ const resolvers = {
     },
     addReview: async (_, args, context) => {
       if (!context.user) {
-        throw new AuthenticationError("User not authenticated");
+        throw new Error("User not authenticated");
       }
 
       const review = await Review.create({
@@ -229,7 +235,7 @@ const resolvers = {
     },
     deleteReview: async (_, { reviewId }, context) => {
       if (!context.user) {
-        throw new AuthenticationError("User not authenticated");
+        throw new Error("User not authenticated");
       }
 
       const review = await Review.findByIdAndDelete(reviewId);
@@ -241,7 +247,7 @@ const resolvers = {
     },
     updateReview: async (_, { reviewId, reviewInput }, context) => {
       if (!context.user) {
-        throw new AuthenticationError("User not authenticated");
+        throw new Error("User not authenticated");
       }
 
       const review = await Review.findByIdAndUpdate(
@@ -250,7 +256,7 @@ const resolvers = {
         { new: true }
       );
       if (!review) {
-        throw new AuthenticationError("Review not found");
+        throw new Error("Review not found");
       }
     },
   },
