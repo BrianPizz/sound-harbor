@@ -82,8 +82,9 @@ db.once("open", async () => {
             $push: {
               products: {
                 product: {
-                  _id: product._id,
+                  _id: refProduct._id,
                   name: refProduct.name,
+                  image: refProduct.image,
                   quantity: randomQuantity,
                   price: randomPrice,
                 },
