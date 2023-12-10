@@ -23,20 +23,7 @@ const resolvers = {
       return Category.findOne({ _id: categoryId });
     },
     carts: async () => {
-      try {
-        const carts = await Cart.find().populate({
-          path: 'products.product.product',
-          model: 'CartItem',
-        });
-        
-        console.log('Carts:', carts);
-
-    
-        return carts;
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch carts");
-      }
+      return Cart.find()
     },
     cart: async (_, { userId }) => {
       return Cart.findOne({ user: userId });

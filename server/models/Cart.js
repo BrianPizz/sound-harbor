@@ -1,4 +1,3 @@
-
 const { Schema, model } = require("mongoose");
 
 const CartItemSchema = new Schema({
@@ -9,18 +8,18 @@ const CartItemSchema = new Schema({
       required: true,
     },
     image: {
-        type: String
+      type: String,
     },
     name: {
-        type: String
+      type: String,
     },
-    quantity: {
-        type: Number
-    },
-    price: {
-      type: Number,
-      default: 0,
-    },
+  },
+  quantity: {
+    type: Number,
+  },
+  price: {
+    type: Number,
+    default: 0,
   },
 });
 
@@ -36,7 +35,7 @@ const cartSchema = new Schema({
   totalAmount: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
   },
 });
 
