@@ -77,8 +77,8 @@ type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addToCart(productId: ID!, quantity: Int!): Cart
-    removeFromCart(productId: ID!): User
-    clearCart(userId: ID!): User
+    removeFromCart(productId: ID!): Cart
+    clearCart(userId: ID!): Cart
     createOrder(userId: ID!): Order
     addReview(productId: ID!, rating: Int!, comment: String!, date: String!): Review
     updateReview(reviewId: ID!, rating: Int!, comment: String!, date: String!): Review

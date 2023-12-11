@@ -168,10 +168,16 @@ const resolvers = {
           if (!user) {
             throw new Error("User not found");
           }
+          // Find the user's cart
+          const cart = await Cart.findOne({ user: user._id });
+
+          if (!cart) {
+            throw new Error("Cart not found");
+          }
 
           // Clear the user's cart
-          user.cart.products = [];
-          user.cart.totalAmount = 0;
+          cart.products = [];
+          cart.totalAmount = 0;
 
           await user.save();
 
