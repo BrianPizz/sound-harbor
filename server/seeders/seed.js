@@ -3,6 +3,7 @@ const { User, Product, Order, Category, Review, Cart } = require("../models");
 const userSeeds = require("./userSeeds.json");
 const categorySeeds = require("./categorySeeds.json");
 const productSeeds = require("./productSeeds.json");
+const reviewSeeds = require("./reviewSeeds.json");
 const cleanDB = require("./cleanDB");
 require("dotenv").config();
 
