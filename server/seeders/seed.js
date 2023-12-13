@@ -62,6 +62,18 @@ db.once("open", async () => {
     );
     console.log(products);
 
+    // Create reviews for each product
+    for (const product of products) {
+      const reviewsForProduct = reviewSeeds.map((reviewSeed) => ({
+        ...reviewSeed,
+        user: users[Math.floor(Math.random() * users.length)]._id,
+        product: product._id,
+      }));
+
+      // TODO: push reviews to product field array
+
+      await Review.create(reviewsForProduct);
+    }
     // create cart for each user
     for (const user of users) {
       const cart = await Cart.create({
