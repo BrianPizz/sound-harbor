@@ -134,6 +134,11 @@ const resolvers = {
             throw new Error("Cart not found");
           }
 
+          console.log(
+            "Product IDs in cart:",
+            cart.products.map((item) => item._id.toString())
+          );
+
           // Find the cart item index to remove
           const cartItemIndex = cart.products.findIndex(
             (item) => item._id.toString() === productId
@@ -145,6 +150,10 @@ const resolvers = {
 
           // Remove the cart item
           cart.products.splice(cartItemIndex, 1);
+          console.log(
+            "Product IDs in cart:",
+            cart.products.map((item) => item._id.toString())
+          );
 
           // Update totalAmount based on the remaining items
           cart.totalAmount = cart.products.reduce(
@@ -152,7 +161,8 @@ const resolvers = {
             0
           );
 
-          return cart;
+          // Save the updated cart to the database
+          await cart.save();
         } else {
           throw new Error("User not authenticated");
         }
@@ -179,7 +189,7 @@ const resolvers = {
           cart.products = [];
           cart.totalAmount = 0;
 
-          await user.save();
+          await cart.save();
 
           return user.cart;
         } else {
