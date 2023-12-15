@@ -211,6 +211,10 @@ const resolvers = {
             throw new Error("User's cart not found");
           }
 
+          if (cart.products.length === 0){
+            throw new Error("Cart is empty")
+          }
+
           // Calculate total amount based on products in the cart
           const totalAmount = cart.products.reduce(
             (total, product) => total + product.price,
