@@ -211,8 +211,8 @@ const resolvers = {
             throw new Error("User's cart not found");
           }
 
-          if (cart.products.length === 0){
-            throw new Error("Cart is empty")
+          if (cart.products.length === 0) {
+            throw new Error("Cart is empty");
           }
 
           // Calculate total amount based on products in the cart
@@ -242,41 +242,56 @@ const resolvers = {
       }
     },
     addReview: async (_, args, context) => {
-      if (!context.user) {
-        throw new Error("User not authenticated");
+      try {
+        if (!context.user) {
+          throw new Error("User not authenticated");
+        }
+
+        const review = await Review.create({
+          user: context.user._id,
+          ...args,
+        });
+
+        return review;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to add review");
       }
-
-      const review = await Review.create({
-        user: context.user._id,
-        ...args,
-      });
-
-      return review;
     },
     deleteReview: async (_, { reviewId }, context) => {
-      if (!context.user) {
-        throw new Error("User not authenticated");
-      }
+      try {
+        if (!context.user) {
+          throw new Error("User not authenticated");
+        }
 
-      const review = await Review.findByIdAndDelete(reviewId);
-      if (!review || review.user.toString() !== context.user._id.toString()) {
-        throw new Error("Review not found or user is not the author");
-      }
+        const review = await Review.findByIdAndDelete(reviewId);
+        if (!review || review.user.toString() !== context.user._id.toString()) {
+          throw new Error("Review not found or user is not the author");
+        }
 
-      return review;
+        return review;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to delete review");
+      }
     },
     updateReview: async (_, { reviewId, reviewInput }, context) => {
-      if (!context.user) {
-        throw new Error("User not authenticated");
-      }
+      try {
+        if (!context.user) {
+          throw new Error("User not authenticated");
+        }
 
-      const review = await Review.findByIdAndUpdate(
-        reviewId,
-        { $set: reviewInput },
-        { new: true }
-      );
-      if (!review) {
-        throw new Error("Review not found");
+        const review = await Review.findByIdAndUpdate(
+          reviewId,
+          { $set: reviewInput },
+          { new: true }
+        );
+        if (!review) {
+          throw new Error("Review not found");
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to update review");
       }
     },
   },
