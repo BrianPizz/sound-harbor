@@ -252,6 +252,16 @@ const resolvers = {
           ...args,
         });
 
+        const product = Product.findByIdAndUpdate(args.productId,
+          
+          {
+            $addToSet: {
+              reviews: review._id
+            }
+          },
+          { new:true }
+          )
+
         return review;
       } catch (error) {
         console.error(error);
