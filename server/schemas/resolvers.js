@@ -249,10 +249,12 @@ const resolvers = {
 
         const review = await Review.create({
           user: context.user._id,
-          ...args,
+          product: args.productId,
+          rating: args.rating,
+          comment: args.comment,
         });
 
-        const product = Product.findByIdAndUpdate(
+        const product = await Product.findByIdAndUpdate(
           args.productId,
           {
             $addToSet: {
@@ -261,6 +263,8 @@ const resolvers = {
           },
           { new: true }
         );
+
+        await product.save();
 
         return review;
       } catch (error) {

@@ -80,8 +80,8 @@ type Mutation {
     removeFromCart(productId: ID!): Cart
     clearCart: Cart
     createOrder: Order
-    addReview(productId: ID!, rating: Int!, comment: String!, date: String!): Review
-    updateReview(reviewId: ID!, rating: Int!, comment: String!, date: String!): Review
+    addReview(productId: ID!, rating: Int!, comment: String!): Review
+    updateReview(reviewId: ID!, rating: Int!, comment: String!): Review
     deleteReview(reviewId: ID!): Review
 }
 `;
