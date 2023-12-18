@@ -171,10 +171,10 @@ const resolvers = {
         throw new Error("Failed to remove from cart");
       }
     },
-    clearCart: async (_, { userId }, context) => {
+    clearCart: async (_, args, context) => {
       try {
         if (context.user) {
-          const user = await User.findById(userId);
+          const user = await User.findById(context.user._id);
           if (!user) {
             throw new Error("User not found");
           }
@@ -252,15 +252,15 @@ const resolvers = {
           ...args,
         });
 
-        const product = Product.findByIdAndUpdate(args.productId,
-          
+        const product = Product.findByIdAndUpdate(
+          args.productId,
           {
             $addToSet: {
-              reviews: review._id
-            }
+              reviews: review._id,
+            },
           },
-          { new:true }
-          )
+          { new: true }
+        );
 
         return review;
       } catch (error) {
