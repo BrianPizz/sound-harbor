@@ -79,7 +79,7 @@ type Mutation {
     addToCart(productId: ID!, quantity: Int!): Cart
     removeFromCart(productId: ID!): Cart
     clearCart: Cart
-    createOrder(userId: ID!): Order
+    createOrder: Order
     addReview(productId: ID!, rating: Int!, comment: String!, date: String!): Review
     updateReview(reviewId: ID!, rating: Int!, comment: String!, date: String!): Review
     deleteReview(reviewId: ID!): Review

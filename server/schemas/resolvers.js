@@ -200,10 +200,10 @@ const resolvers = {
         throw new Error("Failed to clear cart");
       }
     },
-    createOrder: async (_, { userId }, context) => {
+    createOrder: async (_, args, context) => {
       try {
         if (context.user) {
-          const user = await User.findById(userId);
+          const user = await User.findById(context.user._id);
 
           const cart = await Cart.findOne({ user: user._id });
 
