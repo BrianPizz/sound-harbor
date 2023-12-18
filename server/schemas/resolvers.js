@@ -5,7 +5,6 @@ const {
   Category,
   Review,
   Cart,
-  CartItem,
 } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
@@ -289,20 +288,21 @@ const resolvers = {
         throw new Error("Failed to delete review");
       }
     },
-    updateReview: async (_, { reviewId, reviewInput }, context) => {
+    updateReview: async (_, args, context) => {
       try {
         if (!context.user) {
           throw new Error("User not authenticated");
         }
 
         const review = await Review.findByIdAndUpdate(
-          reviewId,
-          { $set: reviewInput },
+          args.reviewId,
+          { rating: args.rating, comment: args.comment },
           { new: true }
         );
         if (!review) {
           throw new Error("Review not found");
         }
+        return review;
       } catch (error) {
         console.error(error);
         throw new Error("Failed to update review");
