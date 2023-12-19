@@ -1,5 +1,22 @@
 import { gql } from "@apollo/client";
 
+export const QUERY_CATEGORIES = gql`
+query Query {
+    categories {
+      _id
+      name
+    }
+  }
+`;
+
+export const QUERY_CATEGORY = gql`
+query Query($categoryId: ID!) {
+    category(categoryId: $categoryId) {
+      name
+    }
+  }
+`;
+
 export const QUERY_CARTS = gql`
 query Query {
     carts {
