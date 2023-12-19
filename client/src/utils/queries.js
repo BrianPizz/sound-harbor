@@ -59,3 +59,12 @@ export const QUERY_CART = gql`
   }
 `;
 
+export const QUERY_ME = gql`
+query Me {
+    me {
+      _id
+      username
+      email
+    }
+  }
+`;
