@@ -35,7 +35,7 @@ const resolvers = {
       return Cart.findOne({ user: userId });
     },
     orders: async () => {
-      return Order.find().populate("products");
+      return Order.find();
     },
     order: async (_, { orderId }) => {
       return Order.findById(orderId);

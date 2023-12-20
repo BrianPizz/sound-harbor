@@ -59,6 +59,39 @@ export const QUERY_CART = gql`
   }
 `;
 
+export const QUERY_ORDERS = gql`
+query Query {
+    orders {
+      _id
+      cart {
+        _id
+      }
+      totalAmount
+      dateCreated
+      user {
+        _id
+      }
+    }
+  }
+`;
+
+
+export const QUERY_ORDER = gql`
+query Query($orderId: ID!) {
+    order(orderId: $orderId) {
+      _id
+      cart {
+        _id
+      }
+      totalAmount
+      dateCreated
+      user {
+        _id
+      }
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
 query Me {
     me {
