@@ -17,6 +17,44 @@ query Query($categoryId: ID!) {
   }
 `;
 
+export const QUERY_PRODUCTS = gql`
+query Query {
+    products {
+      _id
+      name
+      description
+      image
+      price
+      stock
+      reviews {
+        _id
+      }
+      category {
+        _id
+      }
+    }
+  }
+`;
+
+export const QUERY_PRODUCT = gql`
+query Query($productId: ID!) {
+    product(productId: $productId) {
+      _id
+      category {
+        _id
+      }
+      name
+      description
+      image
+      price
+      stock
+      reviews {
+        _id
+      }
+    }
+  }
+`;
+
 export const QUERY_CARTS = gql`
 query Query {
     carts {
