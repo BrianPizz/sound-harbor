@@ -55,6 +55,23 @@ query Query($productId: ID!) {
   }
 `;
 
+export const QUERY_REVIEWS = gql`
+query Query {
+    review {
+      _id
+      product {
+        _id
+      }
+      rating
+      comment
+      user {
+        _id
+      }
+      date
+    }
+  }
+`;
+
 export const QUERY_REVIEW = gql`
 query Query($reviewId: ID!) {
     review(reviewId: $reviewId) {
