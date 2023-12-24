@@ -164,6 +164,16 @@ query Query($orderId: ID!) {
   }
 `;
 
+export const QUERY_USERS = gql`
+query Query {
+    users {
+      _id
+      email
+      username
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
 query Me {
     me {
