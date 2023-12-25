@@ -174,6 +174,16 @@ query Query {
   }
 `;
 
+export const QUERY_USER = gql`
+query Query($userId: ID!) {
+    user(userId: $userId) {
+      _id
+      email
+      username
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
 query Me {
     me {
