@@ -23,3 +23,11 @@ mutation AddUser($username: String!, $email: String!, $password: String!) {
     }
   }
 `;
+
+export const ADD_REVIEW = gql`
+mutation Mutation($productId: ID!, $rating: Int!, $comment: String!) {
+    addReview(productId: $productId, rating: $rating, comment: $comment) {
+      _id
+    }
+  }
+`;
