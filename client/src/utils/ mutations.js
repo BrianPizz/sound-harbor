@@ -29,6 +29,14 @@ mutation AddToCart($productId: ID!, $quantity: Int!) {
   }
 `;
 
+export const CREATE_ORDER = gql`
+mutation CreateOrder {
+    createOrder {
+      _id
+    }
+  }
+`;
+
 export const ADD_USER = gql`
 mutation AddUser($username: String!, $email: String!, $password: String!) {
     addUser(username: $username, email: $email, password: $password) {
