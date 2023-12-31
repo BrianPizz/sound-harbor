@@ -55,3 +55,11 @@ mutation Mutation($productId: ID!, $rating: Int!, $comment: String!) {
     }
   }
 `;
+
+export const DELETE_REVIEW = gql`
+mutation DeleteReview($reviewId: ID!) {
+    deleteReview(reviewId: $reviewId) {
+      _id
+    }
+  }
+`;
