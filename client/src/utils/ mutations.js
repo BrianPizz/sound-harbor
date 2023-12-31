@@ -21,6 +21,14 @@ mutation AddToCart($productId: ID!, $quantity: Int!) {
   }
 `;
 
+export const REMOVE_FROM_CART = gql`
+mutation RemoveFromCart($productId: ID!) {
+    removeFromCart(productId: $productId) {
+      _id
+    }
+  }
+`;
+
 export const CLEAR_CART = gql`
 mutation AddToCart($productId: ID!, $quantity: Int!) {
     addToCart(productId: $productId, quantity: $quantity) {
