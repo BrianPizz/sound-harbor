@@ -64,6 +64,14 @@ mutation Mutation($productId: ID!, $rating: Int!, $comment: String!) {
   }
 `;
 
+export const UPDATE_REVIEW = gql`
+mutation UpdateReview($reviewId: ID!, $rating: Int!, $comment: String!) {
+    updateReview(reviewId: $reviewId, rating: $rating, comment: $comment) {
+      _id
+    }
+  }
+`;
+
 export const DELETE_REVIEW = gql`
 mutation DeleteReview($reviewId: ID!) {
     deleteReview(reviewId: $reviewId) {
