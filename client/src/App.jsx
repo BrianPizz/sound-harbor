@@ -6,8 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Home from "./pages/home";
-
-
+import Header from "./components/Header"
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -35,6 +34,7 @@ const client = new ApolloClient({
 export default function App() {
   return (
     <ApolloProvider client={client}>
+      <Header />
       <Home />
     </ApolloProvider>
   );
