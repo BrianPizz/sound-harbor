@@ -5,12 +5,12 @@ const Categories = ({ categories, title }) => {
 
   return (
     <div className="w-3/4 bg-slate-300">
-      <p className="text-2xl text-center">{title}</p>
-      <ul>
+      <p className="text-2xl font-semibold text-center">{title}</p>
+      <div className="flex justify-between px-2">
         {categories.map(category => (
-          <li key={category._id}>{category.name}</li>
+          <button key={category._id}>{category.name}</button>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
