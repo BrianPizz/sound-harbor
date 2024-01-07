@@ -5,7 +5,7 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import Home from "./pages/home";
+import { Outlet } from 'react-router-dom';
 import Header from "./components/Header"
 
 const httpLink = createHttpLink({
@@ -35,7 +35,7 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Header />
-      <Home />
+      <Outlet />
     </ApolloProvider>
   );
 }
