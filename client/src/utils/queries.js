@@ -17,19 +17,6 @@ query Query($categoryId: ID!) {
   }
 `;
 
-export const QUERY_CATEGORY_PRODUCTS = gql`
-  query QueryCategoryProducts($categoryId: ID!) {
-    category(categoryId: $categoryId) {
-      _id
-      name
-      products {
-        _id
-        name
-        // Add more fields as needed
-      }
-    }
-  }
-`;
 
 export const QUERY_PRODUCTS = gql`
 query Query {
