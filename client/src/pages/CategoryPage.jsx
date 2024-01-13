@@ -10,7 +10,6 @@ const CategoryPage = () => {
 
   if (loading) return <div>Loading...</div>;
 
-
   const products = data.products.filter(
     (product) => product.category?._id === categoryId
   );
@@ -22,6 +21,7 @@ const CategoryPage = () => {
         {products.map((product) => (
           <li key={product._id}>
             <p>{product.name}</p>
+            <img src={product.image} alt="image" />
           </li>
         ))}
       </ul>
