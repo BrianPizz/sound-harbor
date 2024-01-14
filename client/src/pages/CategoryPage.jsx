@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORY, QUERY_PRODUCTS } from "../utils/queries";
+import { Link } from "react-router-dom";
 
 const CategoryPage = () => {
     const { categoryId } = useParams();
@@ -29,6 +30,7 @@ const CategoryPage = () => {
             key={product._id}
             className="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
           >
+            <Link to={`/product/${product._id}`}>
             <img
               src={product.image}
               alt={product.name}
@@ -39,6 +41,7 @@ const CategoryPage = () => {
             <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
               Add to Cart
             </button>
+            </Link>
           </div>
         ))}
       </div>
