@@ -1,22 +1,39 @@
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCT } from "../utils/queries";
 
 const ProductPage = () => {
-const { productId } = useParams();
+  const { productId } = useParams();
 
-const {loading, data } = useQuery(QUERY_PRODUCT, {
-    variables: {productId},
-});
+  const { loading, data } = useQuery(QUERY_PRODUCT, {
+    variables: { productId },
+  });
 
-if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
 
-const product = data.product;
+  const product = data.product;
 
-console.log(product)
+  return (
+    <div className="container mx-auto my-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <img className="w-full rounded-lg" src={product.image} alt={product.name} />
+        </div>
+        <div>
+          <h2 className="text-3xl font-semibold mb-4">{product.name}</h2>
+          <p className="text-gray-700 mb-4">{product.description}</p>
+          <div className="flex items-center mb-4">
+            <p className="text-2xl font-bold text-green-600">${product.price.toFixed(2)}</p>
+            <span className="ml-2 text-gray-500">In Stock</span>
+          </div>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    return <div>Product Page</div>;
-  };
-  
-  export default ProductPage;
-  
+export default ProductPage;
