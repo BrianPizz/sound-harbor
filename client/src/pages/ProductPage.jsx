@@ -18,7 +18,7 @@ const ProductPage = () => {
   return (
     <div className="container mx-auto">
         <div className="my-2">
-      <Link to={`/category/${product.category._id}`}>
+      <Link className="text-red-600" to={`/category/${product.category._id}`}>
         Back to category
       </Link>
         </div>
