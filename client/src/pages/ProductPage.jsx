@@ -25,7 +25,7 @@ const ProductPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <img
-            className="w-full rounded-lg"
+            className="lg:max-w-lg rounded-lg"
             src={product.image}
             alt={product.name}
           />
