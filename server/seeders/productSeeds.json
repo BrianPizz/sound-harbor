@@ -11,7 +11,7 @@
     "description": "Closed-back headphones with exceptional clarity",
     "price": 149.0,
     "stock": 30,
-    "image": "audio_technica_m50x.jpg"
+    "image": "/assets/images/audio_technica_m50x.jpg"
   },
   {
     "name": "KRK Rokit 5 G4 Studio Monitor (Single)",
