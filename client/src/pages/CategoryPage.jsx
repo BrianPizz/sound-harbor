@@ -27,7 +27,9 @@ const CategoryPage = () => {
 
   return (
     <div className="container mx-auto px-8 mt-3">
-      <Link className="text-red-600" to={`/`}>Home</Link>
+      <Link className="text-red-600" to={`/`}>
+        Home
+      </Link>
       <h2 className="text-3xl font-semibold mb-6">{category.name}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {products.map((product) => (

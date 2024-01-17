@@ -7,9 +7,12 @@ import { Link } from "react-router-dom";
 const ProductPage = () => {
   const { productId } = useParams();
 
-  const { loading: productLoading, data: productData } = useQuery(QUERY_PRODUCT, {
-    variables: { productId },
-  });
+  const { loading: productLoading, data: productData } = useQuery(
+    QUERY_PRODUCT,
+    {
+      variables: { productId },
+    }
+  );
 
   if (productLoading) return <div>Loading...</div>;
 
@@ -17,11 +20,11 @@ const ProductPage = () => {
 
   return (
     <div className="container mx-auto">
-        <div className="my-2">
-      <Link className="text-red-600" to={`/category/${product.category._id}`}>
-        Back to category
-      </Link>
-        </div>
+      <div className="my-2">
+        <Link className="text-red-600" to={`/category/${product.category._id}`}>
+          Back to category
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <img
