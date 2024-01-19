@@ -25,7 +25,7 @@
     "description": "High-performance audio interface for recording",
     "price": 159.99,
     "stock": 25,
-    "image": "focusrite_scarlett_2i2.jpg"
+    "image": "/assets/images/focusrite_scarlett_2i2.jpg"
   },
   {
     "name": "Akai Professional MPK Mini MKII MIDI Keyboard Controller",
