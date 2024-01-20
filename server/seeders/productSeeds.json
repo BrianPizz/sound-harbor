@@ -32,7 +32,7 @@
     "description": "Compact keyboard controller with 25 keys",
     "price": 119.0,
     "stock": 18,
-    "image": "akai_mpk_mini.jpg"
+    "image": "/assets/images/akai_mpk_mini.jpg"
   },
   {
     "name": "FL Studio 20",
