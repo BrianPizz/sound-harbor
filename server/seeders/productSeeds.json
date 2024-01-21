@@ -38,32 +38,31 @@
     "name": "FL Studio 20",
     "description": "Complete software music production environment or Digital Audio Workstation (DAW).",
     "price": 299.0,
-    "image": "fl_studio_20.jpg"
+    "image": "/assets/images/fl_studio.jpg"
   },
   {
     "name": "Pro Tools",
     "description": "Industry-standard digital audio workstation (DAW) software used for music production, sound design, and audio editing.",
     "category": "Audio Software",
     "price": 599.00,
-    "quantity": 15,
-    "image": "pro_tools.jpg"
+    "image": "/assets/images/pro_tools.jpg"
   },
   {
     "name": "Native Instruments Komplete 13",
     "description": "A comprehensive collection of virtual instruments and effects for music production.",
     "price": 599.0,
-    "image": "ni_komplete_13.jpg"
+    "image": "/assets/images/native-komplete-14.jpg"
   },
   {
     "name": "FabFilter Pro-Q 3",
     "description": "Professional equalizer plugin with high-quality sound and a unique interface.",
     "price": 179.0,
-    "image": "fabfilter_proq_3.jpg"
+    "image": "/assets/images/pro-q-3.jpg"
   },
   {
     "name": "Soundtoys 5 Bundle",
     "description": "A collection of creative audio effects plugins for sound manipulation and processing.",
     "price": 499.0,
-    "image": "soundtoys_5_bundle.jpg"
+    "image": "/assets/images/soundtoys.jpg"
   }
 ]
