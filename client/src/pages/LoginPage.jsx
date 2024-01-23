@@ -25,6 +25,8 @@ const Login = () => {
         variables: { ...formState },
       });
       Auth.login(data.login.token);
+      // Redirect to the home page after successful login
+      history.push("/");
     } catch (e) {
       console.error(e);
     }
@@ -35,11 +37,40 @@ const Login = () => {
     });
   };
 
-  return (
-    <div>
-        login
+  return <div>
+        <div>
+      <h2>Login</h2>
+      <form onSubmit={handleFormSubmit}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formState.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={formState.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+      {error && <p>Error: {error.message}</p>}
+      <p>
+        Don't have an account? <Link to="/">Sign up here</Link>.
+      </p>
     </div>
-  )
+  </div>;
 };
 
 export default Login;
