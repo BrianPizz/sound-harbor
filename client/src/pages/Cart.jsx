@@ -2,17 +2,23 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_CART } from "../utils/queries";
 import { useMutation } from "@apollo/client";
 import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from "../utils/mutations";
+import { useEffect } from "react";
 
 const Cart = () => {
-  const { loading, data } = useQuery(QUERY_CART);
+  // Query logged in user
+  const { loading: userLoading, data: userData } = useQuery(QUERY_ME);
 
-  if(loading){
-    return <div>Loading...</div>
-  }
+  const me = userData?.me;
+  console.log(me);
 
-  const cart = data?.cart;
+  // Query cart with logged in user's id
+  const { loading: cartLoading, data: cartData } = useQuery(QUERY_CART, {
+    skip: !me, // Skip the query if 'me' is not available
+    variables: { userId: me?._id },
+  });
 
-  console.log(cart)
+  const cart = cartData?.cart;
+  console.log(cart);
 
   const [addToCart] = useMutation(ADD_TO_CART);
   const [removeFromCart] = useMutation(REMOVE_FROM_CART);
@@ -34,9 +40,7 @@ const Cart = () => {
     clearCart();
   };
 
-  return (<div>
-    Cart
-  </div>);
+  return <div>Cart</div>;
 };
 
 export default Cart;
