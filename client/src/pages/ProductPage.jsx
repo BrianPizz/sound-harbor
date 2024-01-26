@@ -20,8 +20,8 @@ const ProductPage = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="my-2">
-        <Link className="text-red-600" to={`/category/${product.category._id}`}>
+      <div className="mt-2 mb-6">
+        <Link className="underline underline-offset-1 text-red-600" to={`/category/${product.category._id}`}>
           Back to category
         </Link>
       </div>
