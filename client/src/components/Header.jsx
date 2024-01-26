@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <div className="flex bg-slate-200 p-3 justify-between">
-      <p className="font-bold text-2xl">Sound Harbor</p>
+      <p className="font-bold text-2xl"><Link to={"/"}>Sound Harbor</Link></p>
         {isLoggedIn ? (
       <div>
             <button className="text-2xl mx-2">My Account</button>
