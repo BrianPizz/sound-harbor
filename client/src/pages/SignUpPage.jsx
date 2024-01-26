@@ -6,7 +6,7 @@ import Auth from "../utils/auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [formState, setFormState] = useState({ username: "",email: "", password: "" });
   const [add, { loading, error, data }] = useMutation(ADD_USER);
 
   // handle form input change
@@ -26,7 +26,7 @@ const SignUp = () => {
         variables: { ...formState },
       });
       console.log(data)
-      Auth.add(data.add.token);
+      Auth.login(data.addUser.token);
       // Redirect to the home page after successful login
       navigate.push("/");
     } catch (e) {
@@ -34,6 +34,7 @@ const SignUp = () => {
     }
 
     setFormState({
+    username: "",
       email: "",
       password: "",
     });
@@ -51,7 +52,7 @@ const SignUp = () => {
               type="username"
               id="username"
               name="username"
-              value={formState.email}
+              value={formState.username}
               onChange={handleChange}
               required
               className="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:border-blue-500 transition-all duration-300"
@@ -86,12 +87,12 @@ const SignUp = () => {
             disabled={loading}
             className="w-full bg-sky-700 text-white mt-2 p-2 rounded-sm hover:bg-sky-800 transition-all duration-300"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing up..." : "Create Account"}
           </button>
         </form>
         {error && <p className="text-red-500">Error: {error.message}</p>}
         <p className="mt-3 text-slate-600">
-          Already have an account? <Link to="/" className="underline text-sky-500">Create Account</Link>.
+          Already have an account? <Link to="/" className="underline text-sky-500">Log in here</Link>.
         </p>
       </div>
     </div>
