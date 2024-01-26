@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
+import SignUp from "./SignUpPage";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const Login = () => {
         </form>
         {error && <p className="text-red-500">Error: {error.message}</p>}
         <p className="mt-3 text-slate-600">
-          Don't have an account? <Link to="/" className="underline text-sky-500">Sign up here</Link>.
+          Don't have an account? <Link to="/SignUp" className="underline text-sky-500">Sign up here</Link>.
         </p>
       </div>
     </div>
