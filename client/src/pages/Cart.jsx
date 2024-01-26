@@ -40,7 +40,26 @@ const Cart = () => {
     clearCart();
   };
 
-  return <div>Cart</div>;
+  return(
+   <div>
+    {cartLoading ? (
+        <div>Loading...</div>
+    ) : (
+<div>
+    <p>Your cart</p>
+    {cart.products.map((product) => (
+        <div key={product.product._id}>
+            <img src={product.product.image} alt={product.product.name} />
+              <p>{product.product.name}</p>
+              <p>Quantity: {product.quantity}</p>
+              <p>Price: ${product.price}</p>
+        </div>
+    ))}
+    <p>Total Amount: ${cartData?.cart.totalAmount}</p>
+</div>
+    )}
+  </div>
+  );
 };
 
 export default Cart;
