@@ -42,7 +42,7 @@ const SignUp = () => {
 
   return (
     <div className="flex justify-center h-screen bg-sky-600">
-      <div className="text-center rounded-md bg-white m-auto w-1/2 p-6">
+      <div className="text-center rounded-md bg-white mt-32 m-auto w-1/2 max-w-lg p-6">
         <p className="text-4xl my-6 font-bold">Sound Harbor</p>
         <h2 className="text-2xl mb-3 font-light text-slate-600">Create an Account</h2>
         <form onSubmit={handleFormSubmit} className="text-left">
