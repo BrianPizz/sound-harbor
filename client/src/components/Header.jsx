@@ -1,4 +1,5 @@
 import Auth from "../utils/auth";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const isLoggedIn = Auth.loggedIn();
@@ -13,7 +14,7 @@ const Header = () => {
         {isLoggedIn ? (
       <div>
             <button className="text-2xl mx-2">My Account</button>
-            <button className="text-2xl mx-2">Cart</button>
+            <button className="text-2xl mx-2"><Link to={"/cart"}>Cart</Link></button>
             <button className="text-2xl mx-2" onClick={logout}>Logout</button>
       </div>
         ) : (
