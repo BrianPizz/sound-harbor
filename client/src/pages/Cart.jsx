@@ -40,26 +40,43 @@ const Cart = () => {
     clearCart();
   };
 
-  return(
-   <div>
-    {cartLoading ? (
+  return (
+    <div>
+      {cartLoading ? (
         <div>Loading...</div>
-    ) : (
-<div>
-    <p>Your cart</p>
-    {cartData?.cart.products.map((product) => (
-        <div key={product.product._id}>
-            <img src={product.product.image} alt={product.product.name} />
-              <p>{product.product.name}</p>
-              <p>Quantity: {product.quantity}</p>
-              <p>Price: ${product.price}</p>
+      ) : (
+        <div className="bg-sky-600">
+          <div className="m-auto rounded-lg py-3 md:w-1/2">
+            <p className="bg-sky-700 text-white px-3 py-2 rounded-t-lg">Your cart</p>
+            {cartData?.cart.products.map((product) => (
+              <div key={product.product._id} className="py-3 flex justify-between border border-slate-200 bg-white">
+                <div
+                  className="w-1/4 h-40 mx-3"
+                  style={{
+                    backgroundImage: `url('${product.product.image}')`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                  }}
+                ></div>
+                <div className="w-1/4">
+                  <p>{product.product.name}</p>
+                </div>
+                <div className="w-1/4 text-center">
+                  <p>Quantity: {product.quantity}</p>
+                </div>
+                <div className="w-1/4">
+                  <p>Price: ${product.price}</p>
+                </div>
+              </div>
+            ))}
+            <p className="bg-white px-3 py-2 rounded-b-lg">Total Amount: ${cartData?.cart.totalAmount}</p>
+          </div>
         </div>
-    ))}
-    <p>Total Amount: ${cartData?.cart.totalAmount}</p>
-</div>
-    )}
-  </div>
+      )}
+    </div>
   );
+  
 };
 
 export default Cart;
