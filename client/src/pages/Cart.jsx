@@ -51,9 +51,15 @@ const Cart = () => {
               <p className="bg-sky-700 text-white text-2xl px-3 py-2 rounded-tl-lg w-1/4">
                 Your cart
               </p>
-              <p className="bg-sky-700 text-white px-3 py-2 w-1/4 font-thin">Product</p>
-              <p className="bg-sky-700 text-white px-3 py-2 w-1/4 text-center font-thin">Quantity</p>
-              <p className="bg-sky-700 text-white px-3 py-2 rounded-tr-lg w-1/4 text-center font-thin">Price</p>
+              <p className="bg-sky-700 text-white px-3 py-2 w-1/4 font-thin">
+                Product
+              </p>
+              <p className="bg-sky-700 text-white px-3 py-2 w-1/4 text-center font-thin">
+                Quantity
+              </p>
+              <p className="bg-sky-700 text-white px-3 py-2 rounded-tr-lg w-1/4 text-center font-thin">
+                Price
+              </p>
             </div>
             {cartData?.cart.products.map((product) => (
               <div
@@ -76,12 +82,22 @@ const Cart = () => {
                   <p>{product.quantity}</p>
                 </div>
                 <div className="w-1/4">
-                  <p className="text-center mt-3 text-lg font-light">${product.price}</p>
+                  <p className="text-center mt-3 text-lg font-light">
+                    $
+                    {product.price.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
                 </div>
               </div>
             ))}
             <p className="bg-white px-3 py-2 rounded-b-lg">
-              Total Amount: ${cartData?.cart.totalAmount}
+              Total Amount: $
+              {cartData?.cart.totalAmount.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
           </div>
         </div>
